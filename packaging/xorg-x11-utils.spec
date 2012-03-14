@@ -1,72 +1,83 @@
-Summary: X11 utilities
-Name: xorg-x11-utils
-Version: 7.5
-Release: 6
-License: MIT/X11
+%define pkgname utils
+
+Summary: X.Org X11 X client utilities
+Name: xorg-x11-%{pkgname}
+Version:	7.5
+Release: 3
+License: MIT
 Group: User Interface/X
 URL: http://www.x.org
-Source: %{name}-%{version}.tar.gz
 
-BuildRequires: pkgconfig(xorg-macros)
-BuildRequires: pkgconfig(x11)
-BuildRequires: pkgconfig(xaw7)
-BuildRequires: pkgconfig(xext)
-BuildRequires: pkgconfig(xft)
-BuildRequires: pkgconfig(xi)
-BuildRequires: pkgconfig(xmuu)
-BuildRequires: pkgconfig(xrender)
-BuildRequires: pkgconfig(xt)
-BuildRequires: pkgconfig(xtst)
-BuildRequires: pkgconfig(xxf86dga)
-BuildRequires: pkgconfig(xxf86vm)
-BuildRequires: pkgconfig(xv)
-BuildRequires: pkgconfig(xmu)
-BuildRequires: pkgconfig(inputproto)
-BuildRequires: pkgconfig(xinerama)
-BuildRequires: pkgconfig(fontenc)
-BuildRequires: pkgconfig(xcb)
-BuildRequires: pkgconfig(xcb-atom)
-BuildRequires: pkgconfig(xcb-shape)
+Source0:  %{name}-%{version}.tar.gz
 
-%define DEF_SUBDIRS appres editres listres luit viewres xdpyinfo xev xfd xfontsel xkill xlsatoms xlsclients xlsfonts xmessage xprop xvinfo xwininfo
+BuildRequires: pkgconfig(xorg-macros) pkgconfig(glproto)
+BuildRequires: pkgconfig(dmx) pkgconfig(gl) pkgconfig(xext) pkgconfig(xft)
+BuildRequires: pkgconfig(xi) pkgconfig(xinerama) pkgconfig(xmu)
+BuildRequires: pkgconfig(xpm) pkgconfig(xt) pkgconfig(xtst) pkgconfig(xv)
+BuildRequires: pkgconfig(xxf86dga) pkgconfig(xxf86misc) pkgconfig(xxf86vm)
+BuildRequires: pkgconfig(xcb) pkgconfig(xcb-atom) pkgconfig(xaw7) pkgconfig(fontenc)
 
-Provides: %{DEF_SUBDIRS}
+Provides: xdpyinfo xev xlsatoms xlsclients xlsfonts xprop xvinfo xwininfo
 
 %description
-A collection of common X Window System applications.
+A collection of client utilities which can be used to query the X server
+for various information.
 
 %prep
-%setup -q
+%setup -q 
 
 %build
+rm -rf debian
 # Build all apps
 {
-    for app in %{DEF_SUBDIRS}; do
-        pushd $app
-        %configure \
-            --disable-xprint \
-            RSH=rsh \
-            MANCONF="/etc/manpath.config"
-        popd
-    done
-}
-
-%install
-rm -rf $RPM_BUILD_ROOT
-# Install all apps
-{
-   for app in %{DEF_SUBDIRS} ; do
+   for app in * ; do
       pushd $app
-      make install DESTDIR=$RPM_BUILD_ROOT
+      if [ -e ./configure ] ; then
+	%configure
+        make
+      fi
       popd
    done
 }
 
-%remove_docs
+%install
+# Install all apps
+{
+   for app in * ; do
+      pushd $app
+      if [ -e Makefile ]; then
+      	make install DESTDIR=$RPM_BUILD_ROOT
+      fi
+      popd
+   done
+}
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+%docs_package
 
 %files
-%{_bindir}/*
-/etc/X11/app-defaults/*
+%{_bindir}/xdpyinfo
+%{_bindir}/xev
+%{_bindir}/xlsatoms
+%{_bindir}/xlsclients
+%{_bindir}/xlsfonts
+%{_bindir}/xprop
+%{_bindir}/xvinfo
+%{_bindir}/xwininfo
+/usr/bin/xmessage
+/etc/X11/app-defaults/Editres
+/etc/X11/app-defaults/Editres-color
+/etc/X11/app-defaults/Viewres
+/etc/X11/app-defaults/Viewres-color
+/etc/X11/app-defaults/XFontSel
+/etc/X11/app-defaults/Xfd
+/etc/X11/app-defaults/Xmessage
+/etc/X11/app-defaults/Xmessage-color
+/usr/bin/appres
+/usr/bin/editres
+/usr/bin/listres
+/usr/bin/luit
+/usr/bin/viewres
+/usr/bin/xdriinfo
+/usr/bin/xfd
+/usr/bin/xfontsel
+/usr/bin/xkill
