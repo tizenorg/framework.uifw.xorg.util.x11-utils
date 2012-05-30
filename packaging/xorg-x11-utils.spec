@@ -6,6 +6,7 @@ License: MIT/X11
 Group: User Interface/X
 URL: http://www.x.org
 Source: %{name}-%{version}.tar.gz
+Source1001: packaging/xorg-x11-utils.manifest 
 
 BuildRequires: pkgconfig(xorg-macros)
 BuildRequires: pkgconfig(x11)
@@ -39,6 +40,7 @@ A collection of common X Window System applications.
 %setup -q
 
 %build
+cp %{SOURCE1001} .
 # Build all apps
 {
     for app in %{DEF_SUBDIRS}; do
@@ -68,5 +70,6 @@ rm -rf $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%manifest xorg-x11-utils.manifest
 %{_bindir}/*
 /etc/X11/app-defaults/*
