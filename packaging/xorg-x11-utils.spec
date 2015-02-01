@@ -2,7 +2,7 @@
 
 Summary: X.Org X11 X client utilities
 Name: xorg-x11-utils
-Version: 7.5
+Version: 7.5.1
 Release: 6
 License: MIT
 Group: User Interface/X
@@ -12,11 +12,11 @@ Source: %{name}-%{version}.tar.gz
 BuildRequires: pkgconfig(dmx) pkgconfig(xext) pkgconfig(xft) pkgconfig(xrandr)
 #BuildRequires: pkgconfig(dmx) pkgconfig(gl) pkgconfig(xext) pkgconfig(xft)
 BuildRequires: pkgconfig(xi) pkgconfig(xinerama) pkgconfig(xmu)
-BuildRequires: pkgconfig(xpm) pkgconfig(xt) pkgconfig(xtst) pkgconfig(xv)
+BuildRequires: pkgconfig(xt) pkgconfig(xtst) pkgconfig(xv)
 BuildRequires: pkgconfig(xxf86dga) pkgconfig(xxf86vm)
 BuildRequires: pkgconfig(xcb) pkgconfig(xcb-atom)
 
-%define DEF_SUBDIRS xdpyinfo xev xlsatoms xlsclients xlsfonts xprop xvinfo xwininfo
+%define DEF_SUBDIRS xdpyinfo xev xprop xvinfo xwininfo
 
 Provides: %{DEF_SUBDIRS} edid-decode 
 
@@ -59,6 +59,7 @@ cp -af COPYING %{buildroot}/usr/share/license/%{name}
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%manifest xorg-x11-utils.manifest
 %defattr(-,root,root,-)
 /usr/share/license/%{name}
 #%doc
