@@ -21,7 +21,8 @@
 
 bin_PROGRAMS = xvinfo
 
-AM_CFLAGS = $(CWARNFLAGS) $(XVINFO_CFLAGS)
+AM_CFLAGS = $(CWARNFLAGS) $(XVINFO_CFLAGS) -fPIE
+AM_LDFLAGS = $(XVINFO_LDFLAGS) -pie
 xvinfo_LDADD = $(XVINFO_LIBS)
 
 xvinfo_SOURCES =	\
@@ -35,7 +36,7 @@ appmandir = $(APP_MAN_DIR)
 
 appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@)
 
-EXTRA_DIST = $(appman_PRE) 
+EXTRA_DIST = $(appman_PRE)
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = $(appman_DATA)
 
